@@ -4,6 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import * as Animatable from "react-native-animatable";
 import { Shadow } from "react-native-shadow-2";
 import SalesScreen from "./SalesScreen";
+import RegisterScreen from "./RegisterScreen";
 
 const LoginScreen = () => {
   const [email, setEmail] = useState("");
@@ -11,7 +12,6 @@ const LoginScreen = () => {
 
   const navigation = useNavigation();
 
-  // Función para validar el inicio de sesión
   const handleLogin = () => {
     if (email === "123" && password === "123") {
       Alert.alert("¡Éxito!", "Inicio de sesión exitoso.");
@@ -23,7 +23,6 @@ const LoginScreen = () => {
 
   return (
     <View style={styles.container}>
-      {/* Logo con efecto 3D palpitante */}
       <Animatable.View
         animation={{
           0: { scale: 1 },
@@ -39,10 +38,8 @@ const LoginScreen = () => {
         </Shadow>
       </Animatable.View>
 
-      {/* Título */}
       <Text style={styles.title}>Iniciar sesión</Text>
 
-      {/* Inputs */}
       <TextInput
         style={styles.input}
         placeholder="Correo electrónico"
@@ -62,14 +59,19 @@ const LoginScreen = () => {
         onChangeText={setPassword}
       />
 
-      {/* Botón */}
       <TouchableOpacity style={styles.button} onPress={handleLogin}>
         <Text style={styles.buttonText}>Iniciar sesión</Text>
       </TouchableOpacity>
 
-      {/* Olvidaste contraseña */}
       <TouchableOpacity>
         <Text style={styles.forgotPassword}>¿Olvidaste tu contraseña?</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={styles.registerButton}
+        onPress={() => navigation.navigate(RegisterScreen)}
+      >
+        <Text style={styles.registerText}>¿No tienes una cuenta? Registrarse</Text>
       </TouchableOpacity>
     </View>
   );
@@ -128,6 +130,14 @@ const styles = StyleSheet.create({
   forgotPassword: {
     color: "#9fa6b2",
     marginTop: 15,
+    textDecorationLine: "underline",
+  },
+  registerButton: {
+    marginTop: 20,
+  },
+  registerText: {
+    color: "#ffffff",
+    fontSize: 16,
     textDecorationLine: "underline",
   },
 });
