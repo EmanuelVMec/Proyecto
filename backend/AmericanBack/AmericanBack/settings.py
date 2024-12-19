@@ -67,6 +67,11 @@ CSRF_TRUSTED_ORIGINS = [
     'https://agroindustria.vercel.app' ,
      "exp://192.168.10.170:8081" # URL de tu frontend en React
 ]
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny',  # Permitir acceso a todos los endpoints
+    ],
+}
 
 ROOT_URLCONF = 'AmericanBack.urls'
 

@@ -12,12 +12,36 @@ const LoginScreen = () => {
 
   const navigation = useNavigation();
 
-  const handleLogin = () => {
-    if (email === "123" && password === "123") {
-      Alert.alert("¡Éxito!", "Inicio de sesión exitoso.");
-      navigation.navigate(SalesScreen);
-    } else {
-      Alert.alert("Error", "Usuario o contraseña incorrectos. Intenta de nuevo.");
+  const handleLogin = async () => {
+    if (!email || !password) {
+      Alert.alert("Error", "Por favor, completa todos los campos.");
+      return;
+    }
+
+    try {
+      const response = await fetch("http://192.168.10.170:8000/api/login/", { // Cambia la URL por la de tu servidor
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: email, // Django espera el campo 'username' para la autenticación
+          password: password,
+        }),
+      });
+
+      if (response.status === 200) {
+        const data = await response.json();
+        Alert.alert("¡Éxito!", `Inicio de sesión exitoso. Bienvenido, ${data.username}.`);
+        navigation.navigate(SalesScreen); // Navega a la pantalla de ventas
+      } else if (response.status === 401) {
+        Alert.alert("Error", "Usuario o contraseña incorrectos.");
+      } else {
+        Alert.alert("Error", "Ocurrió un problema. Intenta de nuevo más tarde.");
+      }
+    } catch (error) {
+      console.error("Error al iniciar sesión:", error);
+      Alert.alert("Error", "Hubo un problema al conectar con el servidor.");
     }
   };
 

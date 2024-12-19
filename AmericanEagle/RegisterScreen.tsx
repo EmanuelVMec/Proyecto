@@ -3,21 +3,45 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from "reac
 import { useNavigation } from "@react-navigation/native";
 
 const RegisterScreen = () => {
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const navigation = useNavigation();
 
-  const handleRegister = () => {
+  const handleRegister = async () => {
     if (password !== confirmPassword) {
       Alert.alert("Error", "Las contraseñas no coinciden.");
       return;
     }
 
-    if (email && password) {
-      Alert.alert("¡Registro exitoso!", "Tu cuenta ha sido creada.");
-      navigation.goBack();
+    if (username && email && password) {
+      try {
+        const response = await fetch("http://192.168.10.170:8000/api/register/", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            username,
+            email,
+            password,
+            confirm_password: confirmPassword,
+          }),
+        });
+
+        if (response.status === 201) {
+          Alert.alert("¡Registro exitoso!", "Tu cuenta ha sido creada.");
+          navigation.goBack();
+        } else {
+          const errorData = await response.json();
+          Alert.alert("Error", JSON.stringify(errorData));
+        }
+      } catch (error) {
+        console.error("Error al registrarse:", error);
+        Alert.alert("Error", "Hubo un problema al conectar con el servidor.");
+      }
     } else {
       Alert.alert("Error", "Por favor, llena todos los campos.");
     }
@@ -26,6 +50,15 @@ const RegisterScreen = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Registrarse</Text>
+
+      <TextInput
+        style={styles.input}
+        placeholder="Nombre de usuario"
+        placeholderTextColor="#6c757d"
+        autoCapitalize="none"
+        value={username}
+        onChangeText={setUsername}
+      />
 
       <TextInput
         style={styles.input}
