@@ -6,6 +6,7 @@ import SalesScreen from "./SalesScreen";
 import AddProductScreen from "./AddProductScreen"; // Importa la nueva pantalla
 import InventoryScreen from "./InventoryScreen";
 import CustomersScreen from "./CustomersScreen";
+import RegisterScreen from "./RegisterScreen";
 
 const Stack = createStackNavigator();
 
@@ -36,6 +37,11 @@ export default function App() {
         <Stack.Screen
           name="CustomersScreen"
           component={CustomersScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="RegisterScreen"
+          component={RegisterScreen}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
