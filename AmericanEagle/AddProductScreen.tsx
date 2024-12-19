@@ -25,8 +25,8 @@ const AddProductScreen = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(formData),
+        
     });
-      console.log(response);
       if (response.status === 201) {
         Alert.alert('Éxito', 'Producto agregado correctamente');
         setFormData({

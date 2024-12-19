@@ -1,53 +1,61 @@
-import React from "react";
-import { View, Text, StyleSheet, Image, FlatList, TouchableOpacity, TextInput } from "react-native";
-
-const data = [
-  {
-    id: "1",
-    name: "Black Leather Jacket",
-    size: "S",
-    price: "$220",
-    country: "Italy",
-    image: "https://via.placeholder.com/60x60", // Placeholder URL for demo
-  },
-  {
-    id: "2",
-    name: "Tweed Blazer",
-    size: "M",
-    price: "$180",
-    country: "France",
-    image: "https://via.placeholder.com/60x60",
-  },
-  {
-    id: "3",
-    name: "Wool Coat",
-    size: "L",
-    price: "$250",
-    country: "USA",
-    image: "https://via.placeholder.com/60x60",
-  },
-  {
-    id: "4",
-    name: "Denim Jacket",
-    size: "XS",
-    price: "$150",
-    country: "Japan",
-    image: "https://via.placeholder.com/60x60",
-  },
-];
+import React, { useEffect, useState } from "react";
+import { View, Text, StyleSheet, Image, FlatList, TouchableOpacity, TextInput, ActivityIndicator } from "react-native";
+import axios from "axios"; // Importamos Axios
 
 const InventoryScreen = () => {
+  const [data, setData] = useState([]); // Estado para los productos
+  const [loading, setLoading] = useState(true); // Estado para la carga
+  const [error, setError] = useState(null); // Estado para errores
+
+  // Función para obtener productos del backend
+  const fetchProducts = async () => {
+    try {
+      const response = await axios.get("http://192.168.10.170:8000/api/viewproducts/"); // Cambia la IP según tu servidor
+      setData(response.data);
+      setLoading(false);
+    } catch (err) {
+      console.error("Error fetching products:", err);
+      setError("No se pudieron cargar los productos");
+      setLoading(false);
+    }
+  };
+
+  // Llamada al cargar el componente
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
   const renderItem = ({ item }) => (
     <View style={styles.itemContainer}>
-      <Image source={{ uri: item.image }} style={styles.itemImage} />
+      <Image
+        source={{ uri: item.image || "https://via.placeholder.com/60x60" }} // Valor por defecto para la imagen
+        style={styles.itemImage}
+      />
       <View style={styles.itemDetails}>
         <Text style={styles.itemName}>{item.name}</Text>
         <Text style={styles.itemInfo}>
-          {item.size}, {item.price}, {item.country}
+          {item.available_sizes}, ${item.price}, {item.country_of_origin}
         </Text>
       </View>
     </View>
   );
+
+  if (loading) {
+    return (
+      <View style={styles.loaderContainer}>
+        <ActivityIndicator size="large" color="#fff" />
+        <Text style={styles.loaderText}>Cargando productos...</Text>
+      </View>
+    );
+  }
+
+  if (error) {
+    return (
+      <View style={styles.errorContainer}>
+        <Text style={styles.errorText}>{error}</Text>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
@@ -69,7 +77,7 @@ const InventoryScreen = () => {
       {/* Inventory List */}
       <FlatList
         data={data}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.id.toString()}
         renderItem={renderItem}
         contentContainerStyle={styles.listContainer}
       />
@@ -135,6 +143,27 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "#aaa",
     marginTop: 5,
+  },
+  loaderContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#111",
+  },
+  loaderText: {
+    marginTop: 10,
+    color: "#fff",
+    fontSize: 16,
+  },
+  errorContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#111",
+  },
+  errorText: {
+    color: "#f00",
+    fontSize: 16,
   },
 });
 
