@@ -3,6 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Image } fro
 import { useNavigation } from "@react-navigation/native";
 import * as Animatable from "react-native-animatable";
 import { Shadow } from "react-native-shadow-2";
+import SalesScreen from "./SalesScreen";
 
 const LoginScreen = () => {
   const [email, setEmail] = useState("");
@@ -12,9 +13,9 @@ const LoginScreen = () => {
 
   // Función para validar el inicio de sesión
   const handleLogin = () => {
-    if (email === "jennifer.faz7012@utc.edu.ec" && password === "123") {
+    if (email === "123" && password === "123") {
       Alert.alert("¡Éxito!", "Inicio de sesión exitoso.");
-      navigation.navigate("SalesScreen");
+      navigation.navigate(SalesScreen);
     } else {
       Alert.alert("Error", "Usuario o contraseña incorrectos. Intenta de nuevo.");
     }
