@@ -1,0 +1,96 @@
+/* Estilo general del encabezado */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 30px;
+  background-color: #ffffff; /* Fondo blanco */
+  color: black; /* Letras negras */
+  position: sticky; /* Mantener el header fijo al hacer scroll */
+  top: 0; /* Fijarlo en la parte superior */
+  z-index: 1000; /* Asegurarse de que esté por encima de otros elementos */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+  width: 97%;
+}
+
+/* Logo */
+.logo img {
+  height: 110px; /* Ajusta el tamaño del logo */
+  width: auto;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 20px; /* Aumento del espacio entre los enlaces */
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links li {
+  position: relative;
+}
+
+.nav-links li a {
+  color: black; /* Letras negras */
+  text-decoration: none;
+  padding: 10px 15px;
+  display: inline-block;
+}
+
+.nav-links li a:hover {
+  background-color: #f4f4f4; /* Fondo gris claro al pasar el mouse */
+  border-radius: 5px;
+}
+
+/* Estilos para el menú desplegable */
+.dropdown-menu {
+  display: none; /* Ocultar por defecto */
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: white;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  list-style: none;
+  padding: 10px 0;
+  margin: 0;
+  border-radius: 5px;
+  z-index: 1000;
+}
+
+.dropdown-menu li {
+  margin: 0;
+}
+
+.dropdown-menu li a {
+  color: #333; /* Letras negras */
+  padding: 10px 20px;
+  display: block;
+  text-decoration: none;
+}
+
+.dropdown-menu li a:hover {
+  background-color: #f4f4f4;
+}
+
+/* Mostrar el menú desplegable al hacer hover */
+.dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+/* Estilo del botón de inicio de sesión */
+.login-btn {
+  background-color: #555;
+  color: white;
+  border: none;
+  padding: 14px 21px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.login-btn:hover {
+  background-color: #777;
+}
+.login-btn svg {
+  font-size: 14px; /* Ajusta el tamaño del ícono */
+}
