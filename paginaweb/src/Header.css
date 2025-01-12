@@ -91,6 +91,34 @@
 .login-btn:hover {
   background-color: #777;
 }
+
 .login-btn svg {
   font-size: 14px; /* Ajusta el tamaño del ícono */
+}
+
+/* Estilos para el buscador */
+.search-container {
+  display: flex;
+  align-items: center;
+}
+
+.search-input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 200px;
+  margin-right: 10px;
+}
+
+.search-btn {
+  background-color: #555;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.search-btn:hover {
+  background-color: #777;
 }

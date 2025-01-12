@@ -1,7 +1,7 @@
 import React from 'react';
 import './Header.css';
 import { Link } from 'react-router-dom';
-import { FaUser } from 'react-icons/fa'; // Importamos el ícono de usuario
+import { FaUser, FaSearch } from 'react-icons/fa'; // Importamos el ícono de usuario y el ícono de búsqueda
 import logo from './amag.png';
 
 function Header({ onLoginClick }) {
@@ -27,11 +27,20 @@ function Header({ onLoginClick }) {
               <li><a href="#">Accesorios</a></li>
             </ul>
           </li>
-          <li><a href="#">Ofertas</a></li>
         </ul>
       </nav>
+      <div className="search-container">
+        <input
+          type="text"
+          className="search-input"
+          placeholder="Buscar productos..."
+        />
+        <button className="search-btn">
+          <FaSearch />
+        </button>
+      </div>
       <button className="login-btn" onClick={onLoginClick}>
-        <FaUser style={{ marginRight: '8px' }} /> Iniciar Sesión {/* Agregamos el ícono aquí */}
+        <FaUser style={{ marginRight: '8px' }} /> Iniciar Sesión
       </button>
     </header>
   );
