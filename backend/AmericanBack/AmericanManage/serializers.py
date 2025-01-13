@@ -3,9 +3,10 @@ from .models import Product
 from django.contrib.auth.models import User
 
 class ProductSerializer(serializers.ModelSerializer):
+    image = serializers.ImageField(required=False)
     class Meta:
         model = Product
-        fields = ['id', 'name', 'description', 'price', 'quantity', 'country_of_origin', 'available_sizes', 'category']
+        fields = ['id', 'name', 'description', 'price', 'quantity', 'country_of_origin', 'available_sizes', 'category','image']
 
 class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, required=True, style={'input_type': 'password'})

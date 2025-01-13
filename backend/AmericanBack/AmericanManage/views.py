@@ -7,14 +7,31 @@ from rest_framework.generics import ListAPIView
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import authenticate
 from rest_framework.permissions import AllowAny
+import logging
+
+# Configuración del logger
+logger = logging.getLogger(__name__)
 
 class AddProductAPIView(APIView):
+    permission_classes = [AllowAny]
+    
     def post(self, request):
+        # Imprimir los datos recibidos para depurar
+        print("Datos recibidos en la solicitud:", request.data)
+
+        # Crear el serializador con los datos recibidos
         serializer = ProductSerializer(data=request.data)
+
+        # Verificar si el serializador es válido
         if serializer.is_valid():
+            print("Datos validados:", serializer.validated_data)
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            # Mostrar los errores de validación
+            print("Errores de validación:", serializer.errors)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
     
 class ProductListAPIView(ListAPIView):
     queryset = Product.objects.all()
