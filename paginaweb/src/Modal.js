@@ -15,9 +15,23 @@ function Modal({ onClose }) {
         <button className="close-btn" onClick={onClose}>X</button>
         <h2>{isLogin ? 'Iniciar Sesión' : 'Registrarse'}</h2>
         {isLogin ? (
-          <SignIn afterSignInUrl="/" />
+          <SignIn
+            afterSignInUrl="/"
+            appearance={{
+              elements: {
+                footerAction__signUp: { display: 'none' }, // 🔥 Oculta el enlace "Don't have an account?"
+              },
+            }}
+          />
         ) : (
-          <SignUp afterSignUpUrl="/" />
+          <SignUp
+            afterSignUpUrl="/"
+            appearance={{
+              elements: {
+                footerAction__signIn: { display: 'none' }, // 🔥 Oculta el enlace "Already have an account?"
+              },
+            }}
+          />
         )}
         <p>
           {isLogin ? '¿No tienes una cuenta?' : '¿Ya tienes una cuenta?'}{' '}
