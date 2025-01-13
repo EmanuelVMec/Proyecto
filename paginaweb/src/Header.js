@@ -1,10 +1,13 @@
 import React from 'react';
 import './Header.css';
 import { Link } from 'react-router-dom';
-import { FaUser, FaSearch } from 'react-icons/fa'; // Importamos el ícono de usuario y el ícono de búsqueda
+import { FaUser, FaSearch } from 'react-icons/fa';
 import logo from './amag.png';
+import { useUser, SignOutButton } from '@clerk/clerk-react'; // Cambiado
 
 function Header({ onLoginClick }) {
+  const { user } = useUser();
+
   return (
     <header className="header">
       <div className="logo">
@@ -39,9 +42,19 @@ function Header({ onLoginClick }) {
           <FaSearch />
         </button>
       </div>
-      <button className="login-btn" onClick={onLoginClick}>
-        <FaUser style={{ marginRight: '8px' }} /> Iniciar Sesión
-      </button>
+
+      {user ? (
+        <div className="user-info">
+          <span>Hola, {user.fullName || user.email}</span>
+          <SignOutButton>
+            <button className="logout-btn">Cerrar Sesión</button>
+          </SignOutButton>
+        </div>
+      ) : (
+        <button className="login-btn" onClick={onLoginClick}>
+          <FaUser style={{ marginRight: '8px' }} /> Iniciar Sesión
+        </button>
+      )}
     </header>
   );
 }

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { SignIn, SignUp } from '@clerk/clerk-react';
 import './Modal.css';
 
 function Modal({ onClose }) {
@@ -14,23 +15,9 @@ function Modal({ onClose }) {
         <button className="close-btn" onClick={onClose}>X</button>
         <h2>{isLogin ? 'Iniciar Sesión' : 'Registrarse'}</h2>
         {isLogin ? (
-          <form className="form">
-            <label>Email:</label>
-            <input type="email" placeholder="Tu correo" required />
-            <label>Contraseña:</label>
-            <input type="password" placeholder="Tu contraseña" required />
-            <button type="submit" className="submit-btn">Iniciar Sesión</button>
-          </form>
+          <SignIn afterSignInUrl="/" />
         ) : (
-          <form className="form">
-            <label>Nombre:</label>
-            <input type="text" placeholder="Tu nombre" required />
-            <label>Email:</label>
-            <input type="email" placeholder="Tu correo" required />
-            <label>Contraseña:</label>
-            <input type="password" placeholder="Tu contraseña" required />
-            <button type="submit" className="submit-btn">Registrarse</button>
-          </form>
+          <SignUp afterSignUpUrl="/" />
         )}
         <p>
           {isLogin ? '¿No tienes una cuenta?' : '¿Ya tienes una cuenta?'}{' '}
