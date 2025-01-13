@@ -1,50 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import './ProductDetails.css';
 import { toast } from 'react-toastify';
 
-const products = [
-  {
-    id: 1,
-    name: 'Camiseta básica',
-    description: 'Camiseta 100% algodón, cómoda y ligera.',
-    price: 10.00,
-    quantity: 50,
-    country: 'España',
-    sizes: ['S', 'M', 'L', 'XL'],
-    category: 'Camisetas',
-    image: 'https://via.placeholder.com/150',
-  },
-  {
-    id: 2,
-    name: 'Pantalón casual',
-    description: 'Pantalón de tela resistente, ideal para el día a día.',
-    price: 25.00,
-    quantity: 30,
-    country: 'Italia',
-    sizes: ['M', 'L', 'XL'],
-    category: 'Pantalones',
-    image: 'https://via.placeholder.com/150',
-  },
-  {
-    id: 3,
-    name: 'Chaqueta de invierno',
-    description: 'Chaqueta impermeable y térmica para bajas temperaturas.',
-    price: 50.00,
-    quantity: 15,
-    country: 'Canadá',
-    sizes: ['L', 'XL', 'XXL'],
-    category: 'Abrigos',
-    image: 'https://via.placeholder.com/150',
-  },
-];
-
 function ProductDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const product = products.find((p) => p.id === parseInt(id));
+  const [product, setProduct] = useState(null);
   const [selectedSize, setSelectedSize] = useState('');
   const [quantity, setQuantity] = useState(1);
+
+  // Obtener los detalles del producto desde la API
+  useEffect(() => {
+    fetch(`http://192.168.10.170:8000/api/products/${id}/`)
+      .then((response) => response.json())
+      .then((data) => setProduct(data))
+      .catch((error) => {
+        console.error('Error fetching product:', error);
+        toast.error('Hubo un problema al cargar los detalles del producto');
+      });
+  }, [id]);
 
   if (!product) {
     return <h2>Producto no encontrado</h2>;
@@ -69,19 +44,19 @@ function ProductDetails() {
 
   return (
     <div className="product-details">
-      <img src={product.image} alt={product.name} />
+      <img src={product.image || 'https://via.placeholder.com/150'} alt={product.name} />
       <h1>{product.name}</h1>
       <p>{product.description}</p>
       <p><strong>Precio:</strong> ${product.price}</p>
-      <p><strong>País de origen:</strong> {product.country}</p>
+      <p><strong>País de origen:</strong> {product.country_of_origin}</p>
       <p><strong>Disponibilidad:</strong> {product.quantity} unidades</p>
 
       <div>
         <label>Talla:</label>
         <select value={selectedSize} onChange={handleSizeChange}>
           <option value="">Seleccionar talla</option>
-          {product.sizes.map((size) => (
-            <option key={size} value={size}>
+          {product.available_sizes.split(',').map((size, index) => (
+            <option key={index} value={size}>
               {size}
             </option>
           ))}
