@@ -6,7 +6,7 @@ function ProductList() {
   const [products, setProducts] = useState([]);
   
   useEffect(() => {
-    fetch('http://192.168.10.170:8000/api/viewproducts/')  
+    fetch('http://127.0.0.1:8000/api/viewproducts/')  
       .then(response => response.json())
       .then(data => setProducts(data))
       .catch(error => console.error('Error fetching products:', error));
