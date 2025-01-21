@@ -56,7 +56,7 @@ MIDDLEWARE = [
 
 CORS_ALLOW_ALL_ORIGINS = True
 
-ALLOWED_HOSTS = ["exp://192.168.10.170:8081",'192.168.10.170', 'localhost', '127.0.0.1','192.168.10.150','192.168.0.103','https://django-deploy-production-8b2e.up.railway.app','django-deploy-production-8b2e.up.railway.app','https://agroindustria.vercel.app']
+ALLOWED_HOSTS = ["192.168.246.78","192.168.246.78:8000","exp://192.168.10.170:8081",'192.168.10.170', 'localhost', '127.0.0.1','192.168.10.150','192.168.0.103','https://django-deploy-production-8b2e.up.railway.app','django-deploy-production-8b2e.up.railway.app','https://agroindustria.vercel.app']
 
 CORS_ALLOW_CREDENTIALS = True
 CSRF_COOKIE_NAME = 'csrftoken'  # Nombre de la cookie CSRF

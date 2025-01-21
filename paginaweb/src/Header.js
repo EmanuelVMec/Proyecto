@@ -26,6 +26,7 @@ function Header({ onLoginClick }) {
               <li><a href="#">Camisetas</a></li>
               <li><a href="#">Pantalones</a></li>
               <li><a href="#">Abrigos</a></li>
+              <li><a href="#">Vestidos</a></li>
               <li><a href="#">Zapatos</a></li>
               <li><a href="#">Accesorios</a></li>
             </ul>

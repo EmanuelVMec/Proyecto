@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import emailjs from 'emailjs-com';
 import './Payment.css';
 
 function Payment() {
@@ -36,6 +37,7 @@ function Payment() {
   const handleConfirmPayment = (e) => {
     e.preventDefault();
 
+    // Validar campos obligatorios
     if (
       !formData.name ||
       !formData.email ||
@@ -51,8 +53,38 @@ function Payment() {
       return;
     }
 
-    alert('¡Compra realizada con éxito!');
-    navigate('/');
+    // Configurar el envío del correo electrónico
+    const emailParams = {
+      to_email: formData.email,
+      name: formData.name,
+      product_name: product.name,
+      description: product.description,
+      selected_size: selectedSize,
+      quantity,
+      total_price: totalPrice,
+    };
+
+    // Enviar correo con EmailJS
+    emailjs
+      .send(
+        'service_ekcwkqi', // Reemplaza con tu Service ID
+        'template_ep1k7x8', // Reemplaza con tu Template ID
+        emailParams,
+        'Fp3shpqrtIt7DNKJy' // Reemplaza con tu Public Key
+      )
+      .then(
+        (result) => {
+          console.log('Correo enviado con éxito:', result.text);
+          alert('¡Factura enviada al correo electrónico!');
+          navigate('/');
+        },
+        (error) => {
+          console.error('Error al enviar el correo:', error.text);
+          alert(
+            'Hubo un error al enviar la factura. Por favor, verifique su conexión a Internet o inténtelo más tarde.'
+          );
+        }
+      );
   };
 
   return (
@@ -61,11 +93,21 @@ function Payment() {
       <div className="payment-details">
         <img src={product.image} alt={product.name} />
         <h2>{product.name}</h2>
-        <p><strong>Descripción:</strong> {product.description}</p>
-        <p><strong>Talla seleccionada:</strong> {selectedSize}</p>
-        <p><strong>Cantidad:</strong> {quantity}</p>
-        <p><strong>Precio unitario:</strong> ${product.price}</p>
-        <p><strong>Total a pagar:</strong> ${totalPrice}</p>
+        <p>
+          <strong>Descripción:</strong> {product.description}
+        </p>
+        <p>
+          <strong>Talla seleccionada:</strong> {selectedSize}
+        </p>
+        <p>
+          <strong>Cantidad:</strong> {quantity}
+        </p>
+        <p>
+          <strong>Precio unitario:</strong> ${product.price}
+        </p>
+        <p>
+          <strong>Total a pagar:</strong> ${totalPrice}
+        </p>
       </div>
 
       <h2>Datos de Facturación</h2>

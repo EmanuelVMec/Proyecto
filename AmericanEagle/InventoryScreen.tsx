@@ -10,7 +10,7 @@ const InventoryScreen = () => {
   // Función para obtener productos del backend
   const fetchProducts = async () => {
     try {
-      const response = await axios.get("http://192.168.10.170:8000/api/viewproducts/"); // Cambia la IP según tu servidor
+      const response = await axios.get("http://192.168.246.78:8000/api/viewproducts/"); // Cambia la IP según tu servidor
       setData(response.data);
       setLoading(false);
     } catch (err) {

@@ -19,7 +19,7 @@ const LoginScreen = () => {
     }
 
     try {
-      const response = await fetch("http://10.10.50.76:8081/api/login/", { // Cambia la URL por la de tu servidor
+      const response = await fetch("http://192.168.246.78:8000/api/login/", { // Cambia la URL por la de tu servidor
         method: "POST",
         headers: {
           "Content-Type": "application/json",
