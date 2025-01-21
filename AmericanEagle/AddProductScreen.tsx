@@ -69,7 +69,7 @@ const AddProductScreen = () => {
     }
   
     try {
-      const response = await fetch('http://192.168.10.170:8000/api/products/', {
+      const response = await fetch('http://10.10.50.76:8081/api/products/', {
         method: 'POST',
         body: formDataToSend, // Aquí pasamos el FormData
       });
