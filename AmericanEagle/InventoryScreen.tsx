@@ -10,13 +10,25 @@ const InventoryScreen = () => {
   // Función para obtener productos del backend
   const fetchProducts = async () => {
     try {
-      const response = await axios.get("http://192.168.246.78:8000/api/viewproducts/"); // Cambia la IP según tu servidor
+      const response = await axios.get("http://172.20.10.2:8000/api/viewproducts/"); // Cambia la IP según tu servidor
       setData(response.data);
       setLoading(false);
     } catch (err) {
       console.error("Error fetching products:", err);
       setError("No se pudieron cargar los productos");
       setLoading(false);
+    }
+  };
+
+  // Función para eliminar un producto
+  const deleteProduct = async (id) => {
+    try {
+      await axios.delete(`http://172.20.10.2:8000/api/products/${id}/delete/`);
+      // Filtramos el producto eliminado del estado
+      setData(data.filter((item) => item.id !== id));
+    } catch (err) {
+      console.error("Error deleting product:", err);
+      setError("No se pudo eliminar el producto");
     }
   };
 
@@ -37,6 +49,10 @@ const InventoryScreen = () => {
           {item.available_sizes}, ${item.price}, {item.country_of_origin}
         </Text>
       </View>
+      {/* Botón de eliminar */}
+      <TouchableOpacity style={styles.deleteButton} onPress={() => deleteProduct(item.id)}>
+        <Text style={styles.deleteText}>❌</Text>
+      </TouchableOpacity>
     </View>
   );
 
@@ -124,6 +140,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#222",
     borderRadius: 10,
     padding: 10,
+    position: "relative", // Esto es necesario para posicionar el ícono de eliminar
   },
   itemImage: {
     width: 60,
@@ -143,6 +160,18 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "#aaa",
     marginTop: 5,
+  },
+  deleteButton: {
+    position: "absolute",
+    top: 10,
+    right: 10,
+    backgroundColor: "rgba(255, 0, 0, 0.5)",
+    borderRadius: 20,
+    padding: 5,
+  },
+  deleteText: {
+    color: "#fff",
+    fontSize: 18,
   },
   loaderContainer: {
     flex: 1,

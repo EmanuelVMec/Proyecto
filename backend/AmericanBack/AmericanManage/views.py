@@ -68,3 +68,15 @@ class LoginAPIView(APIView):
             }, status=status.HTTP_200_OK)
         else:
             return Response({"detail": "Credenciales inválidas."}, status=status.HTTP_401_UNAUTHORIZED)
+
+class ProductDeleteAPIView(APIView):
+    permission_classes = [AllowAny]  # Permitir acceso sin autenticación (modifica según sea necesario)
+    
+    def delete(self, request, pk):
+        try:
+            # Buscar el producto por su ID
+            product = Product.objects.get(id=pk)
+            product.delete()  # Eliminar el producto
+            return Response({"message": "Producto eliminado correctamente"}, status=status.HTTP_204_NO_CONTENT)
+        except Product.DoesNotExist:
+            return Response({"detail": "Producto no encontrado"}, status=status.HTTP_404_NOT_FOUND)

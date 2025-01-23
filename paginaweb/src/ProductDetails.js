@@ -12,7 +12,7 @@ function ProductDetails() {
 
   // Obtener los detalles del producto desde la API
   useEffect(() => {
-    fetch(`http://127.0.0.1:8000/api/products/${id}/`)
+    fetch(`http://172.20.10.2:8000/api/products/${id}/`)
       .then((response) => response.json())
       .then((data) => setProduct(data))
       .catch((error) => {

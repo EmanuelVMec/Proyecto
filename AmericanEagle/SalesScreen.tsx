@@ -10,36 +10,13 @@ const SalesScreen = () => {
       {/* Header */}
       <Text style={styles.header}>Ventas</Text>
 
-      {/* Total Sales */}
-      <View style={styles.salesContainer}>
-        <Text style={styles.salesLabel}>Total de ventas</Text>
-        <Text style={styles.salesAmount}>$5,943</Text>
-        <Text style={styles.salesIncrease}>
-          Últimos 30 días <Text style={styles.percent}>+12%</Text>
-        </Text>
-      </View>
+      
 
-      {/* Graph Placeholder */}
-      <View style={styles.graphContainer}>
-        <Text style={styles.graphPlaceholder}>[ Gráfica aquí ]</Text>
-      </View>
-
-      {/* Time Ranges */}
-      <View style={styles.timeRangeContainer}>
-        {['Hoy', 'Esta semana', 'Este mes', '3 meses', '1 año'].map((item, index) => (
-          <Text key={index} style={styles.timeRangeText}>
-            {item}
-          </Text>
-        ))}
-      </View>
+      
 
       {/* Options */}
       <ScrollView>
-        <TouchableOpacity style={styles.option}
-        onPress={() => navigation.navigate('CustomersScreen')}
-        >
-          <Text style={styles.optionText}>Clientes</Text>
-        </TouchableOpacity>
+        
         <TouchableOpacity style={styles.option}
             onPress={() => navigation.navigate('InventoryScreen')}
         >
