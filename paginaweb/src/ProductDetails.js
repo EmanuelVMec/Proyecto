@@ -12,7 +12,7 @@ function ProductDetails() {
 
   // Obtener los detalles del producto desde la API
   useEffect(() => {
-    fetch(`http://192.168.0.104:8000/api/products/${id}/`)
+    fetch(`http://127.0.0.1:8000/api/products/${id}/`)
       .then((response) => response.json())
       .then((data) => setProduct(data))
       .catch((error) => {
@@ -50,6 +50,12 @@ function ProductDetails() {
       <p><strong>Precio:</strong> ${product.price}</p>
       <p><strong>País de origen:</strong> {product.country_of_origin}</p>
       <p><strong>Disponibilidad:</strong> {product.quantity} unidades</p>
+      <p>
+        <strong>Categoría principal:</strong> {product.category.main_category.name}
+      </p>
+      <p>
+        <strong>Subcategoría:</strong> {product.category.name}
+      </p>
 
       <div>
         <label>Talla:</label>

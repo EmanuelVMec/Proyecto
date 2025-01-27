@@ -6,10 +6,10 @@ function ProductList() {
   const [products, setProducts] = useState([]);
   
   useEffect(() => {
-    fetch('http://192.168.0.104:8000/api/viewproducts/')  
-      .then(response => response.json())
-      .then(data => setProducts(data))
-      .catch(error => console.error('Error fetching products:', error));
+    fetch('http://127.0.0.1:8000/api/viewproducts/')  
+      .then((response) => response.json())
+      .then((data) => setProducts(data))
+      .catch((error) => console.error('Error fetching products:', error));
   }, []);  
 
   return (
@@ -20,7 +20,8 @@ function ProductList() {
           <h2>{product.name}</h2>
           <p>{product.description}</p>
           <p><strong>Precio:</strong> ${product.price}</p>
-          <p><strong>Categoría:</strong> {product.category}</p>
+          <p><strong>Categoría principal:</strong> {product.category.main_category.name}</p>
+          <p><strong>Subcategoría:</strong> {product.category.name}</p>
           <p><strong>Disponible en tamaños:</strong> {product.available_sizes}</p>
           <Link to={`/product/${product.id}`} className="buy-button">Ver más</Link>
         </div>
