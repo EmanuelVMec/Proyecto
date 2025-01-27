@@ -15,7 +15,7 @@
 
 /* Logo */
 .logo img {
-  height: 110px; /* Ajusta el tamaño del logo */
+  height: 114px; /* Ajusta el tamaño del logo */
   width: auto;
 }
 
@@ -139,4 +139,151 @@
 
 .logout-btn:hover {
   background-color: #ff1a1a;
+}
+
+/* Carrito */
+.cart-dropdown {
+  position: relative;
+  margin-left: left; /* Empuja el carrito hacia la izquierda */
+}
+
+.cart-link {
+  color: black;
+  text-decoration: none;
+  font-size: 40px; /* Ícono más grande */
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.cart-link:hover {
+  color: #555;
+}
+
+.cart-count {
+  background-color: #ff4d4d;
+  color: white;
+  font-size: 14px; /* Tamaño más grande */
+  border-radius: 50%;
+  padding: 5px 8px; /* Más grande */
+  margin-left: 5px;
+  position: absolute;
+  top: -8px; /* Ajustar posición vertical */
+  right: -12px; /* Ajustar posición horizontal */
+}
+
+.cart-menu {
+  display: none; /* Ocultar por defecto */
+  position: absolute;
+  top: 100%;
+  left: 0; /* Mueve el menú del carrito hacia la izquierda */
+  background-color: white;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  list-style: none;
+  padding: 10px 0;
+  margin: 0;
+  border-radius: 5px;
+  z-index: 1000;
+  width: 250px; /* Más ancho */
+}
+
+.cart-menu li {
+  margin: 0;
+}
+
+.cart-menu li a {
+  color: #333;
+  padding: 15px 20px; /* Más grande */
+  display: block;
+  text-decoration: none;
+}
+
+.cart-menu li a:hover {
+  background-color: #f4f4f4;
+}
+
+
+
+/* Botón de Ver Carrito */
+.view-cart {
+  font-weight: bold;
+  text-align: center;
+  display: block;
+  padding: 15px;
+  color: #555;
+}
+
+.view-cart:hover {
+  color: #000;
+}
+/* Contenedor general del carrito */
+.cart-container {
+  position: relative;
+}
+
+/* Botón del carrito */
+.cart-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 35px;
+  position: relative;
+  color: #000;
+  right: 35px;
+}
+
+.cart-count {
+  background-color: #ff4d4d;
+  color: white;
+  font-size: 14px;
+  border-radius: 50%;
+  padding: 4px 8px;
+  position: absolute;
+  top: -5px;
+  right: -10px;
+}
+
+/* Sidebar del carrito */
+.cart-sidebar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 300px;
+  height: 100%;
+  background-color: white;
+  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.cart-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.view-cart {
+  margin-top: 20px;
+  font-size: 16px;
+  color: #007bff;
+  text-decoration: none;
+}
+
+.view-cart:hover {
+  text-decoration: underline;
+}
+
+/* Botón para cerrar el carrito */
+.close-cart {
+  background: none;
+  border: none;
+  font-size: 40px;
+  align-self: flex-end;
+  cursor: pointer;
 }

@@ -19,7 +19,7 @@ function Modal({ onClose }) {
             afterSignInUrl="/"
             appearance={{
               elements: {
-                footerAction__signUp: { display: 'none' }, // 🔥 Oculta el enlace "Don't have an account?"
+                footerAction__signUp: { display: 'none' },
               },
             }}
           />
@@ -28,7 +28,7 @@ function Modal({ onClose }) {
             afterSignUpUrl="/"
             appearance={{
               elements: {
-                footerAction__signIn: { display: 'none' }, // 🔥 Oculta el enlace "Already have an account?"
+                footerAction__signIn: { display: 'none' }, 
               },
             }}
           />

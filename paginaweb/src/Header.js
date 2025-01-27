@@ -1,13 +1,18 @@
 import React from 'react';
 import './Header.css';
 import { Link } from 'react-router-dom';
-import { FaUser, FaSearch } from 'react-icons/fa';
+import { FaUser, FaSearch, FaShoppingCart } from 'react-icons/fa';
 import logo from './amag.png';
 import { useUser, SignOutButton } from '@clerk/clerk-react'; // Cambiado
 
 function Header({ onLoginClick }) {
   const { user } = useUser();
+  const [isCartOpen, setIsCartOpen] = React.useState(false);
 
+  const toggleCart = () => {
+    setIsCartOpen(!isCartOpen);
+  };
+  
   return (
     <header className="header">
       <div className="logo">
@@ -16,23 +21,40 @@ function Header({ onLoginClick }) {
       <nav>
         <ul className="nav-links">
           <li><Link to="/">Inicio</Link></li>
-          <li><a href="#">Mujer</a></li>
-          <li><a href="#">Hombre</a></li>
-          <li><a href="#">Niños</a></li>
-          <li><a href="#">Bebé</a></li>
           <li className="dropdown">
-            <a href="#">Categorías</a>
+            <a href="#">Mujer</a>
             <ul className="dropdown-menu">
-              <li><a href="#">Camisetas</a></li>
-              <li><a href="#">Pantalones</a></li>
+              <li><a href="#">Casual</a></li>
+              <li><a href="#">Oficina</a></li>
+              <li><a href="#">Fiesta</a></li>
+              <li><a href="#">Deportiva</a></li>
               <li><a href="#">Abrigos</a></li>
-              <li><a href="#">Vestidos</a></li>
-              <li><a href="#">Zapatos</a></li>
+              <li><a href="#">Lencería</a></li>
+            </ul>
+          </li>
+          <li className="dropdown">
+            <a href="#">Hombre</a>
+            <ul className="dropdown-menu">
+              <li><a href="#">Casual</a></li>
+              <li><a href="#">Formal</a></li>
+              <li><a href="#">Deportiva</a></li>
+              <li><a href="#">Abrigos</a></li>
+              <li><a href="#">Interior</a></li>
+            </ul>
+          </li>
+          <li className="dropdown">
+            <a href="#">Bebé</a>
+            <ul className="dropdown-menu">
+              <li><a href="#">Recién Nacido</a></li>
+              <li><a href="#">Casual</a></li>
+              <li><a href="#">Abrigos</a></li>
+              <li><a href="#">Dormir</a></li>
               <li><a href="#">Accesorios</a></li>
             </ul>
           </li>
         </ul>
       </nav>
+
       <div className="search-container">
         <input
           type="text"
@@ -56,6 +78,27 @@ function Header({ onLoginClick }) {
           <FaUser style={{ marginRight: '8px' }} /> Iniciar Sesión
         </button>
       )}
+
+      {/* Carrito lateral */}
+<div className="cart-container">
+  <button className="cart-toggle" onClick={toggleCart}>
+    <FaShoppingCart />
+    <span className="cart-count">0</span>
+  </button>
+
+  {isCartOpen && (
+    <div className="cart-sidebar">
+      <button className="close-cart" onClick={toggleCart}>
+        &times;
+      </button>
+      <div className="cart-content">
+        <p>Carrito vacío</p>
+        <a href="#" className="view-cart">FINALIZAR COMPRA</a>
+      </div>
+    </div>
+  )}
+</div>
+
     </header>
   );
 }
