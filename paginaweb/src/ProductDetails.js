@@ -1,16 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import './ProductDetails.css';
 import { toast } from 'react-toastify';
 
-function ProductDetails() {
+function ProductDetails({ onAddToCart }) { // Recibe la función para agregar al carrito
   const { id } = useParams();
-  const navigate = useNavigate();
   const [product, setProduct] = useState(null);
   const [selectedSize, setSelectedSize] = useState('');
   const [quantity, setQuantity] = useState(1);
 
-  // Obtener los detalles del producto desde la API
   useEffect(() => {
     fetch(`http://127.0.0.1:8000/api/products/${id}/`)
       .then((response) => response.json())
@@ -30,17 +28,34 @@ function ProductDetails() {
   };
 
   const handleQuantityChange = (e) => {
-    setQuantity(e.target.value);
+    setQuantity(Number(e.target.value));
   };
 
-  const handleBuyNow = () => {
+  const handleAddToCartClick = () => {
     if (!selectedSize) {
       toast.warn('Por favor, selecciona una talla para continuar.');
       return;
     }
-
-    navigate('/payment', { state: { product, selectedSize, quantity } });
+  
+    const cartItem = {
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image: product.image,
+      size: selectedSize,
+      quantity,
+    };
+  
+    // Verifica si onAddToCart está disponible y se ejecuta
+    console.log('onAddToCart:', onAddToCart); // Verifica si la función está definida
+    if (onAddToCart) {
+      onAddToCart(cartItem); 
+      toast.success('Producto agregado al carrito');
+    } else {
+      toast.error('No se pudo agregar al carrito');
+    }
   };
+  
 
   return (
     <div className="product-details">
@@ -50,12 +65,6 @@ function ProductDetails() {
       <p><strong>Precio:</strong> ${product.price}</p>
       <p><strong>País de origen:</strong> {product.country_of_origin}</p>
       <p><strong>Disponibilidad:</strong> {product.quantity} unidades</p>
-      <p>
-        <strong>Categoría principal:</strong> {product.category.main_category.name}
-      </p>
-      <p>
-        <strong>Subcategoría:</strong> {product.category.name}
-      </p>
 
       <div>
         <label>Talla:</label>
@@ -80,7 +89,9 @@ function ProductDetails() {
         />
       </div>
 
-      <button onClick={handleBuyNow} className="buy-now-button">Comprar ahora</button>
+      <button onClick={handleAddToCartClick} className="add-to-cart-button">
+        Agregar al carrito
+      </button>
     </div>
   );
 }
