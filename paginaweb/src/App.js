@@ -19,7 +19,6 @@ function App() {
 
   const handleAddToCart = (item) => {
     setCartItems((prevItems) => [...prevItems, item]);
-    toast.success('Producto agregado al carrito');
   };
 
   const clearCart = () => {
