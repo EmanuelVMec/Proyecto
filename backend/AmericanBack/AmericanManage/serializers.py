@@ -3,9 +3,18 @@ from .models import Product, MainCategory, SubCategory
 from django.contrib.auth.models import User
 
 class MainCategorySerializer(serializers.ModelSerializer):
+    subcategories = serializers.SerializerMethodField()
+
     class Meta:
         model = MainCategory
-        fields = ['id', 'name']  # Incluye los campos básicos de MainCategory
+        fields = ['id', 'name', 'subcategories']
+
+    def get_subcategories(self, obj):
+        include_subcategories = self.context.get('include_subcategories', False)
+        if include_subcategories:
+            subcategories = obj.subcategories.all()
+            return SubCategorySerializer(subcategories, many=True).data
+        return None
 
 
 class SubCategorySerializer(serializers.ModelSerializer):

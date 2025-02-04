@@ -1,8 +1,8 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status, generics
 from .models import Product, MainCategory, SubCategory
-from .serializers import ProductSerializer, RegisterSerializer
+from .serializers import ProductSerializer, RegisterSerializer,MainCategorySerializer, SubCategorySerializer
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import authenticate
@@ -80,3 +80,48 @@ class ProductDeleteAPIView(APIView):
             return Response({"message": "Producto eliminado correctamente"}, status=status.HTTP_204_NO_CONTENT)
         except Product.DoesNotExist:
             return Response({"detail": "Producto no encontrado"}, status=status.HTTP_404_NOT_FOUND)
+
+# Vista para obtener todas las categorías principales con sus subcategorías
+class MainCategoryList(generics.ListAPIView):
+    queryset = MainCategory.objects.all()
+    serializer_class = MainCategorySerializer
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context['include_subcategories'] = True  # Incluir subcategorías en la respuesta
+        return context
+
+# Vista para obtener las subcategorías de una categoría principal específica
+class SubCategoryList(generics.ListAPIView):
+    serializer_class = SubCategorySerializer
+
+    def get_queryset(self):
+        main_category_id = self.kwargs['main_category_id']
+        return SubCategory.objects.filter(main_category_id=main_category_id)
+    
+class ProductListBySubCategory(generics.ListAPIView):
+    serializer_class = ProductSerializer
+
+    def get_queryset(self):
+        subcategory_id = self.kwargs['subcategory_id']
+        return Product.objects.filter(category_id=subcategory_id)
+
+    def list(self, request, *args, **kwargs):
+        # Obtener los productos filtrados
+        queryset = self.get_queryset()
+        serializer = self.get_serializer(queryset, many=True)
+
+        # Obtener la subcategoría y la categoría principal
+        subcategory_id = self.kwargs['subcategory_id']
+        subcategory = SubCategory.objects.get(id=subcategory_id)
+        category_name = subcategory.main_category.name
+        subcategory_name = subcategory.name
+
+        # Crear una respuesta personalizada
+        response_data = {
+            'category_name': category_name,
+            'subcategory_name': subcategory_name,
+            'products': serializer.data,
+        }
+
+        return Response(response_data)

@@ -1,65 +1,78 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './Header.css';
 import { Link } from 'react-router-dom';
 import { FaUser, FaSearch, FaShoppingCart } from 'react-icons/fa';
 import logo from './amag.png';
 import { useUser, SignOutButton } from '@clerk/clerk-react';
+import axios from 'axios';
+
 
 function Header({ cartItems, onAddToCart, onClearCart }) {
   const { user } = useUser();
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [mainCategories, setMainCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
+  // Obtener las categorías principales y subcategorías desde el backend
+  useEffect(() => {
+    axios.get('http://localhost:8000/api/main-categories/')
+      .then(response => {
+        setMainCategories(response.data);
+        setLoading(false);
+      })
+      .catch(error => {
+        console.error('Error fetching categories:', error);
+        setError('Error al cargar las categorías');
+        setLoading(false);
+      });
+  }, []);
+
+  // Alternar la visibilidad del carrito
   const toggleCart = () => {
     setIsCartOpen(!isCartOpen);
   };
 
+  // Vaciar el carrito
   const clearCart = () => {
-    onClearCart(); // Llamar la función onClearCart pasada desde el componente padre
+    onClearCart();
   };
+  
+
+  // Mostrar un mensaje de carga o error
+  if (loading) return <p>Cargando categorías...</p>;
+  if (error) return <p>{error}</p>;
 
   return (
     <>
       <header className="header">
+        {/* Logo */}
         <div className="logo">
-          <img src={logo} alt="Logo de American Eagle" />
+          <img src={logo} alt="Logo de la tienda" />
         </div>
+
+        {/* Navegación */}
         <nav>
           <ul className="nav-links">
             <li><Link to="/">Inicio</Link></li>
-            <li className="dropdown">
-              <a href="#">Mujer</a>
-              <ul className="dropdown-menu">
-                <li><a href="#">Casual</a></li>
-                <li><a href="#">Oficina</a></li>
-                <li><a href="#">Fiesta</a></li>
-                <li><a href="#">Deportiva</a></li>
-                <li><a href="#">Abrigos</a></li>
-                <li><a href="#">Lencería</a></li>
-              </ul>
-            </li>
-            <li className="dropdown">
-              <a href="#">Hombre</a>
-              <ul className="dropdown-menu">
-                <li><a href="#">Casual</a></li>
-                <li><a href="#">Formal</a></li>
-                <li><a href="#">Deportiva</a></li>
-                <li><a href="#">Abrigos</a></li>
-                <li><a href="#">Interior</a></li>
-              </ul>
-            </li>
-            <li className="dropdown">
-              <a href="#">Bebé</a>
-              <ul className="dropdown-menu">
-                <li><a href="#">Recién Nacido</a></li>
-                <li><a href="#">Casual</a></li>
-                <li><a href="#">Abrigos</a></li>
-                <li><a href="#">Dormir</a></li>
-                <li><a href="#">Accesorios</a></li>
-              </ul>
-            </li>
+            {mainCategories.map(mainCategory => (
+              <li className="dropdown" key={mainCategory.id}>
+                <a href="#">{mainCategory.name}</a>
+                <ul className="dropdown-menu">
+                  {mainCategory.subcategories.map(subcategory => (
+                    <li key={subcategory.id}>
+                      <Link to={`/products/subcategory/${subcategory.id}`}>
+                        {subcategory.name}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </li>
+            ))}
           </ul>
         </nav>
 
+        {/* Barra de búsqueda */}
         <div className="search-container">
           <input
             type="text"
@@ -71,6 +84,7 @@ function Header({ cartItems, onAddToCart, onClearCart }) {
           </button>
         </div>
 
+        {/* Autenticación */}
         {user ? (
           <div className="user-info">
             <span>Hola, {user.fullName || user.email}</span>
@@ -84,7 +98,7 @@ function Header({ cartItems, onAddToCart, onClearCart }) {
           </button>
         )}
 
-        {/* Carrito lateral */}
+        {/* Carrito de compras */}
         <div className="cart-container">
           <button className="cart-toggle" onClick={toggleCart}>
             <FaShoppingCart />
@@ -111,8 +125,11 @@ function Header({ cartItems, onAddToCart, onClearCart }) {
                     ))}
                   </ul>
                 )}
-                <a href="#" className="view-cart">FINALIZAR COMPRA</a>
-                <button className="clear-cart" onClick={clearCart}>Vaciar carrito</button> {/* Botón de vaciar carrito */}
+                <Link to="/checkout" state={{ cartItems }} className="view-cart">
+  FINALIZAR COMPRA
+</Link>
+
+                <button className="clear-cart" onClick={clearCart}>Vaciar carrito</button>
               </div>
             </div>
           )}

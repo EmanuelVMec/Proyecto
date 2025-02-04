@@ -6,8 +6,10 @@ import Modal from './Modal';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import ProductDetails from './ProductDetails';
 import Payment from './Payment';
+import ProductFilter from './ProductFilter';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
+import Checkout from './Checkout';
 
 function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -19,7 +21,6 @@ function App() {
 
   const handleAddToCart = (item) => {
     setCartItems((prevItems) => [...prevItems, item]);
-    toast.success('Producto agregado al carrito');
   };
 
   const clearCart = () => {
@@ -40,6 +41,8 @@ function App() {
           <Route path="/" element={<ProductList />} />
           <Route path="/product/:id" element={<ProductDetails onAddToCart={handleAddToCart} />} />
           <Route path="/payment" element={<Payment />} />
+          <Route path="/products/subcategory/:subcategory_id" element={<ProductFilter onAddToCart={handleAddToCart} />} />
+          <Route path="/checkout" element={<Checkout />} />
         </Routes>
         <ToastContainer 
           position="top-right" 
