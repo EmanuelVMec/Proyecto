@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import './Header.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FaUser, FaSearch, FaShoppingCart } from 'react-icons/fa';
 import logo from './amag.png';
-import { useUser, SignOutButton } from '@clerk/clerk-react';
+import { useUser, SignOutButton, SignInButton } from '@clerk/clerk-react';
 import axios from 'axios';
-
 
 function Header({ cartItems, onAddToCart, onClearCart }) {
   const { user } = useUser();
@@ -13,10 +12,12 @@ function Header({ cartItems, onAddToCart, onClearCart }) {
   const [mainCategories, setMainCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const navigate = useNavigate();
 
   // Obtener las categorías principales y subcategorías desde el backend
   useEffect(() => {
-    axios.get('http://localhost:8000/api/main-categories/')
+    axios.get('http://192.168.0.102:8000/api/main-categories/')
       .then(response => {
         setMainCategories(response.data);
         setLoading(false);
@@ -37,7 +38,20 @@ function Header({ cartItems, onAddToCart, onClearCart }) {
   const clearCart = () => {
     onClearCart();
   };
-  
+
+  // Manejar la búsqueda y redirigir a la página de resultados
+  const handleSearch = async () => {
+    if (!searchTerm.trim()) {
+      return;
+    }
+
+    try {
+      const response = await axios.get(`http://192.168.0.102:8000/api/products/search/?search=${encodeURIComponent(searchTerm)}`);
+      navigate('/search-results', { state: { results: response.data } });
+    } catch (error) {
+      console.error('Error fetching search results:', error);
+    }
+  };
 
   // Mostrar un mensaje de carga o error
   if (loading) return <p>Cargando categorías...</p>;
@@ -78,24 +92,56 @@ function Header({ cartItems, onAddToCart, onClearCart }) {
             type="text"
             className="search-input"
             placeholder="Buscar productos..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
           />
-          <button className="search-btn">
+          <button className="search-btn" onClick={handleSearch}>
             <FaSearch />
           </button>
         </div>
 
         {/* Autenticación */}
         {user ? (
-          <div className="user-info">
-            <span>Hola, {user.fullName || user.email}</span>
+          <div className="user-info" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <span style={{ fontWeight: 'bold', color: '#fff', fontSize: '18px', textShadow: '1px 1px 2px #000' }}>
+              👋 Hola, {user.fullName || user.email}
+            </span>
             <SignOutButton>
-              <button className="logout-btn">Cerrar Sesión</button>
+              <button className="logout-btn" style={{
+                backgroundColor: '#e74c3c',
+                color: '#fff',
+                border: 'none',
+                borderRadius: '5px',
+                padding: '8px 15px',
+                cursor: 'pointer',
+                transition: 'background-color 0.3s',
+                boxShadow: '0 4px 6px rgba(0, 0, 0, 0.3)'
+              }}
+                onMouseOver={(e) => e.target.style.backgroundColor = '#c0392b'}
+                onMouseOut={(e) => e.target.style.backgroundColor = '#e74c3c'}
+              >
+                Cerrar Sesión
+              </button>
             </SignOutButton>
           </div>
         ) : (
-          <button className="login-btn">
-            <FaUser style={{ marginRight: '8px' }} /> Iniciar Sesión
-          </button>
+          <SignInButton>
+            <button className="login-btn" style={{
+              backgroundColor: '#3498db',
+              color: '#fff',
+              border: 'none',
+              borderRadius: '5px',
+              padding: '8px 10px',
+              cursor: 'pointer',
+              transition: 'background-color 0.3s',
+              boxShadow: '0 4px 6px rgba(0, 0, 0, 0.3)'
+            }}
+              onMouseOver={(e) => e.target.style.backgroundColor = '#2980b9'}
+              onMouseOut={(e) => e.target.style.backgroundColor = '#3498db'}
+            >
+              <FaUser style={{ marginRight: '8px' }} /> Iniciar Sesión
+            </button>
+          </SignInButton>
         )}
 
         {/* Carrito de compras */}
@@ -126,9 +172,8 @@ function Header({ cartItems, onAddToCart, onClearCart }) {
                   </ul>
                 )}
                 <Link to="/checkout" state={{ cartItems }} className="view-cart">
-  FINALIZAR COMPRA
-</Link>
-
+                  FINALIZAR COMPRA
+                </Link>
                 <button className="clear-cart" onClick={clearCart}>Vaciar carrito</button>
               </div>
             </div>

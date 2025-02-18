@@ -11,7 +11,7 @@ function ProductFilter({ onAddToCart }) {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch(`http://localhost:8000/api/products/subcategory/${subcategory_id}/`)
+    fetch(`http://192.168.0.102:8000/api/products/subcategory/${subcategory_id}/`)
       .then((response) => response.json())
       .then((data) => {
         setProducts(data.products); // Actualizar la lista de productos

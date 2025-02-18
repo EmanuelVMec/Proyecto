@@ -10,6 +10,7 @@ import ProductFilter from './ProductFilter';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
 import Checkout from './Checkout';
+import Busqueda from './Busqueda';
 
 function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -43,6 +44,7 @@ function App() {
           <Route path="/payment" element={<Payment />} />
           <Route path="/products/subcategory/:subcategory_id" element={<ProductFilter onAddToCart={handleAddToCart} />} />
           <Route path="/checkout" element={<Checkout />} />
+          <Route path="/search-results" element={<Busqueda />} />
         </Routes>
         <ToastContainer 
           position="top-right" 

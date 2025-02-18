@@ -125,3 +125,12 @@ class ProductListBySubCategory(generics.ListAPIView):
         }
 
         return Response(response_data)
+
+
+# Vista para buscar productos por nombre o términos relacionados
+class ProductSearchAPIView(generics.ListAPIView):
+    serializer_class = ProductSerializer
+
+    def get_queryset(self):
+        search_term = self.request.query_params.get('search', '')
+        return Product.objects.filter(name__icontains=search_term)

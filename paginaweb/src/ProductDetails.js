@@ -10,7 +10,7 @@ function ProductDetails({ onAddToCart }) { // Recibe la función para agregar al
   const [quantity, setQuantity] = useState(1);
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:8000/api/products/${id}/`)
+    fetch(`http://192.168.0.102:8000/api/products/${id}/`)
       .then((response) => response.json())
       .then((data) => setProduct(data))
       .catch((error) => {
